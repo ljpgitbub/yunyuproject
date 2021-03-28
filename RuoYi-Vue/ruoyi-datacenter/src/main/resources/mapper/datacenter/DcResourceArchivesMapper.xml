@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.datacenter.mapper.DcResourceArchivesMapper">
+    
+    <resultMap type="DcResourceArchives" id="DcResourceArchivesResult">
+        <result property="id"    column="ID"    />
+        <result property="resourceName"    column="RESOURCE_NAME"    />
+        <result property="resourceCatalogId"    column="RESOURCE_CATALOG_ID"    />
+        <result property="dataServerId"    column="DATA_SERVER_ID"    />
+        <result property="createdBy"    column="CREATED_BY"    />
+        <result property="createdTime"    column="CREATED_TIME"    />
+        <result property="updatedBy"    column="UPDATED_BY"    />
+        <result property="updatedTime"    column="UPDATED_TIME"    />
+        <result property="deletedTime"    column="DELETED_TIME"    />
+        <result property="deletedBy"    column="DELETED_BY"    />
+        <result property="deletedFlag"    column="DELETED_FLAG"    />
+    </resultMap>
+
+    <sql id="selectDcResourceArchivesVo">
+        select ID, RESOURCE_NAME, RESOURCE_CATALOG_ID, DATA_SERVER_ID, CREATED_BY, CREATED_TIME, UPDATED_BY, UPDATED_TIME, DELETED_TIME, DELETED_BY, DELETED_FLAG from dc_resource_archives
+    </sql>
+
+    <select id="selectDcResourceArchivesList" parameterType="DcResourceArchives" resultMap="DcResourceArchivesResult">
+        <include refid="selectDcResourceArchivesVo"/>
+        <where>  
+            <if test="resourceName != null  and resourceName != ''"> and RESOURCE_NAME like concat('%', #{resourceName}, '%')</if>
+            <if test="resourceCatalogId != null  and resourceCatalogId != ''"> and RESOURCE_CATALOG_ID = #{resourceCatalogId}</if>
+            <if test="dataServerId != null  and dataServerId != ''"> and DATA_SERVER_ID = #{dataServerId}</if>
+            <if test="createdBy != null  and createdBy != ''"> and CREATED_BY = #{createdBy}</if>
+            <if test="createdTime != null "> and CREATED_TIME = #{createdTime}</if>
+            <if test="updatedBy != null  and updatedBy != ''"> and UPDATED_BY = #{updatedBy}</if>
+            <if test="updatedTime != null "> and UPDATED_TIME = #{updatedTime}</if>
+            <if test="deletedTime != null "> and DELETED_TIME = #{deletedTime}</if>
+            <if test="deletedBy != null  and deletedBy != ''"> and DELETED_BY = #{deletedBy}</if>
+            <if test="deletedFlag != null  and deletedFlag != ''"> and DELETED_FLAG = #{deletedFlag}</if>
+        </where>
+    </select>
+    
+    <select id="selectDcResourceArchivesById" parameterType="String" resultMap="DcResourceArchivesResult">
+        <include refid="selectDcResourceArchivesVo"/>
+        where ID = #{id}
+    </select>
+        
+    <insert id="insertDcResourceArchives" parameterType="DcResourceArchives">
+        <selectKey keyProperty="id" resultType="java.lang.String" order="BEFORE">
+            select REPLACE(newId(),'-','')
+        </selectKey>
+
+        insert into dc_resource_archives
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="resourceName != null">RESOURCE_NAME,</if>
+            <if test="resourceCatalogId != null">RESOURCE_CATALOG_ID,</if>
+            <if test="dataServerId != null">DATA_SERVER_ID,</if>
+            <if test="createdBy != null">CREATED_BY,</if>
+            CREATED_TIME,
+            <if test="updatedBy != null">UPDATED_BY,</if>
+            <if test="updatedTime != null">UPDATED_TIME,</if>
+            <if test="deletedTime != null">DELETED_TIME,</if>
+            <if test="deletedBy != null">DELETED_BY,</if>
+            <if test="deletedFlag != null">DELETED_FLAG,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="resourceName != null">#{resourceName},</if>
+            <if test="resourceCatalogId != null">#{resourceCatalogId},</if>
+            <if test="dataServerId != null">#{dataServerId},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            getdate(),
+            <if test="updatedBy != null">#{updatedBy},</if>
+            <if test="updatedTime != null">#{updatedTime},</if>
+            <if test="deletedTime != null">#{deletedTime},</if>
+            <if test="deletedBy != null">#{deletedBy},</if>
+            <if test="deletedFlag != null">#{deletedFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDcResourceArchives" parameterType="DcResourceArchives">
+        update dc_resource_archives
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="resourceName != null">RESOURCE_NAME = #{resourceName},</if>
+            <if test="resourceCatalogId != null">RESOURCE_CATALOG_ID = #{resourceCatalogId},</if>
+            <if test="dataServerId != null">DATA_SERVER_ID = #{dataServerId},</if>
+            <if test="createdBy != null">CREATED_BY = #{createdBy},</if>
+            <if test="createdTime != null">CREATED_TIME = #{createdTime},</if>
+            <if test="updatedBy != null">UPDATED_BY = #{updatedBy},</if>
+            UPDATED_TIME = getdate(),
+            <if test="deletedTime != null">DELETED_TIME = #{deletedTime},</if>
+            <if test="deletedBy != null">DELETED_BY = #{deletedBy},</if>
+            <if test="deletedFlag != null">DELETED_FLAG = #{deletedFlag},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteDcResourceArchivesById" parameterType="String">
+        delete from dc_resource_archives where ID = #{id}
+    </delete>
+
+    <delete id="deleteDcResourceArchivesByIds" parameterType="String">
+        delete from dc_resource_archives where ID in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

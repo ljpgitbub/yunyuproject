@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.basedata.mapper.BsiDatabaseServerMapper">
+    
+    <resultMap type="BsiDatabaseServer" id="BsiDatabaseServerResult">
+        <result property="id"    column="ID"    />
+        <result property="name"    column="NAME"    />
+        <result property="host"    column="HOST"    />
+        <result property="instanceName"    column="INSTANCE_NAME"    />
+        <result property="port"    column="PORT"    />
+        <result property="username"    column="USERNAME"    />
+        <result property="password"    column="PASSWORD"    />
+        <result property="databaseName"    column="DATABASE_NAME"    />
+        <result property="isDefault"    column="IS_DEFAULT"    />
+        <result property="tradeId"    column="TRADE_ID"    />
+        <result property="description"    column="DESCRIPTION"    />
+        <result property="createdBy"    column="CREATED_BY"    />
+        <result property="createdTime"    column="CREATED_TIME"    />
+        <result property="updatedBy"    column="UPDATED_BY"    />
+        <result property="updatedTime"    column="UPDATED_TIME"    />
+        <result property="deletedTime"    column="DELETED_TIME"    />
+        <result property="deletedBy"    column="DELETED_BY"    />
+        <result property="deletedFlag"    column="DELETED_FLAG"    />
+    </resultMap>
+
+    <sql id="selectBsiDatabaseServerVo">
+        select ID, NAME, HOST, INSTANCE_NAME, PORT, USERNAME, PASSWORD, DATABASE_NAME, IS_DEFAULT, TRADE_ID, DESCRIPTION, CREATED_BY, CREATED_TIME, UPDATED_BY, UPDATED_TIME, DELETED_TIME, DELETED_BY, DELETED_FLAG from bsi_database_server
+    </sql>
+
+    <select id="selectBsiDatabaseServerList" parameterType="BsiDatabaseServer" resultMap="BsiDatabaseServerResult">
+        <include refid="selectBsiDatabaseServerVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and NAME like concat('%', #{name}, '%')</if>
+            <if test="host != null  and host != ''"> and HOST = #{host}</if>
+            <if test="instanceName != null  and instanceName != ''"> and INSTANCE_NAME like concat('%', #{instanceName}, '%')</if>
+            <if test="port != null  and port != ''"> and PORT = #{port}</if>
+            <if test="username != null  and username != ''"> and USERNAME like concat('%', #{username}, '%')</if>
+            <if test="password != null  and password != ''"> and PASSWORD = #{password}</if>
+            <if test="databaseName != null  and databaseName != ''"> and DATABASE_NAME like concat('%', #{databaseName}, '%')</if>
+            <if test="isDefault != null  and isDefault != ''"> and IS_DEFAULT = #{isDefault}</if>
+            <if test="tradeId != null  and tradeId != ''"> and TRADE_ID = #{tradeId}</if>
+            <if test="description != null  and description != ''"> and DESCRIPTION = #{description}</if>
+            <if test="createdBy != null  and createdBy != ''"> and CREATED_BY = #{createdBy}</if>
+            <if test="createdTime != null "> and CREATED_TIME = #{createdTime}</if>
+            <if test="updatedBy != null  and updatedBy != ''"> and UPDATED_BY = #{updatedBy}</if>
+            <if test="updatedTime != null "> and UPDATED_TIME = #{updatedTime}</if>
+            <if test="deletedTime != null "> and DELETED_TIME = #{deletedTime}</if>
+            <if test="deletedBy != null  and deletedBy != ''"> and DELETED_BY = #{deletedBy}</if>
+            <if test="deletedFlag != null  and deletedFlag != ''"> and DELETED_FLAG = #{deletedFlag}</if>
+        </where>
+    </select>
+    
+    <select id="selectBsiDatabaseServerById" parameterType="String" resultMap="BsiDatabaseServerResult">
+        <include refid="selectBsiDatabaseServerVo"/>
+        where ID = #{id}
+    </select>
+        
+    <insert id="insertBsiDatabaseServer" parameterType="BsiDatabaseServer">
+        <selectKey keyProperty="id" resultType="java.lang.String" order="BEFORE">
+            select REPLACE(newId(),'-','')
+        </selectKey>
+
+        insert into bsi_database_server
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="name != null">NAME,</if>
+            <if test="host != null">HOST,</if>
+            <if test="instanceName != null">INSTANCE_NAME,</if>
+            <if test="port != null">PORT,</if>
+            <if test="username != null">USERNAME,</if>
+            <if test="password != null">PASSWORD,</if>
+            <if test="databaseName != null">DATABASE_NAME,</if>
+            <if test="isDefault != null">IS_DEFAULT,</if>
+            <if test="tradeId != null">TRADE_ID,</if>
+            <if test="description != null">DESCRIPTION,</if>
+            <if test="createdBy != null">CREATED_BY,</if>
+            <if test="createdTime != null">CREATED_TIME,</if>
+            <if test="updatedBy != null">UPDATED_BY,</if>
+            <if test="updatedTime != null">UPDATED_TIME,</if>
+            <if test="deletedTime != null">DELETED_TIME,</if>
+            <if test="deletedBy != null">DELETED_BY,</if>
+            <if test="deletedFlag != null">DELETED_FLAG,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="host != null">#{host},</if>
+            <if test="instanceName != null">#{instanceName},</if>
+            <if test="port != null">#{port},</if>
+            <if test="username != null">#{username},</if>
+            <if test="password != null">#{password},</if>
+            <if test="databaseName != null">#{databaseName},</if>
+            <if test="isDefault != null">#{isDefault},</if>
+            <if test="tradeId != null">#{tradeId},</if>
+            <if test="description != null">#{description},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updatedBy != null">#{updatedBy},</if>
+            <if test="updatedTime != null">#{updatedTime},</if>
+            <if test="deletedTime != null">#{deletedTime},</if>
+            <if test="deletedBy != null">#{deletedBy},</if>
+            <if test="deletedFlag != null">#{deletedFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBsiDatabaseServer" parameterType="BsiDatabaseServer">
+        update bsi_database_server
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">NAME = #{name},</if>
+            <if test="host != null">HOST = #{host},</if>
+            <if test="instanceName != null">INSTANCE_NAME = #{instanceName},</if>
+            <if test="port != null">PORT = #{port},</if>
+            <if test="username != null">USERNAME = #{username},</if>
+            <if test="password != null">PASSWORD = #{password},</if>
+            <if test="databaseName != null">DATABASE_NAME = #{databaseName},</if>
+            <if test="isDefault != null">IS_DEFAULT = #{isDefault},</if>
+            <if test="tradeId != null">TRADE_ID = #{tradeId},</if>
+            <if test="description != null">DESCRIPTION = #{description},</if>
+            <if test="createdBy != null">CREATED_BY = #{createdBy},</if>
+            <if test="createdTime != null">CREATED_TIME = #{createdTime},</if>
+            <if test="updatedBy != null">UPDATED_BY = #{updatedBy},</if>
+            <if test="updatedTime != null">UPDATED_TIME = #{updatedTime},</if>
+            <if test="deletedTime != null">DELETED_TIME = #{deletedTime},</if>
+            <if test="deletedBy != null">DELETED_BY = #{deletedBy},</if>
+            <if test="deletedFlag != null">DELETED_FLAG = #{deletedFlag},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteBsiDatabaseServerById" parameterType="String">
+        delete from bsi_database_server where ID = #{id}
+    </delete>
+
+    <delete id="deleteBsiDatabaseServerByIds" parameterType="String">
+        delete from bsi_database_server where ID in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

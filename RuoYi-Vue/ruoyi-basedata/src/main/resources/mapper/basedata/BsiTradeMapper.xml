@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.basedata.mapper.BsiTradeMapper">
+    
+    <resultMap type="BsiTrade" id="BsiTradeResult">
+        <result property="id"    column="ID"    />
+        <result property="name"    column="NAME"    />
+        <result property="showOrder"    column="SHOW_ORDER"    />
+        <result property="isUse"    column="IS_USE"    />
+        <result property="deletedFlag"    column="DELETED_FLAG"    />
+        <result property="createdBy"    column="CREATED_BY"    />
+        <result property="createdTime"    column="CREATED_TIME"    />
+        <result property="updatedBy"    column="UPDATED_BY"    />
+        <result property="updatedTime"    column="UPDATED_TIME"    />
+        <result property="deletedTime"    column="DELETED_TIME"    />
+        <result property="deletedBy"    column="DELETED_BY"    />
+    </resultMap>
+
+    <sql id="selectBsiTradeVo">
+        select ID, NAME, SHOW_ORDER, IS_USE, DELETED_FLAG, CREATED_BY, CREATED_TIME, UPDATED_BY, UPDATED_TIME, DELETED_TIME, DELETED_BY from bsi_trade
+    </sql>
+
+    <select id="selectBsiTradeList" parameterType="BsiTrade" resultMap="BsiTradeResult">
+        <include refid="selectBsiTradeVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and NAME like concat('%', #{name}, '%')</if>
+            <if test="showOrder != null "> and SHOW_ORDER = #{showOrder}</if>
+            <if test="isUse != null  and isUse != ''"> and IS_USE = #{isUse}</if>
+            <if test="deletedFlag != null  and deletedFlag != ''"> and DELETED_FLAG = #{deletedFlag}</if>
+            <if test="createdBy != null  and createdBy != ''"> and CREATED_BY = #{createdBy}</if>
+            <if test="createdTime != null "> and CREATED_TIME = #{createdTime}</if>
+            <if test="updatedBy != null  and updatedBy != ''"> and UPDATED_BY = #{updatedBy}</if>
+            <if test="updatedTime != null "> and UPDATED_TIME = #{updatedTime}</if>
+            <if test="deletedTime != null "> and DELETED_TIME = #{deletedTime}</if>
+            <if test="deletedBy != null  and deletedBy != ''"> and DELETED_BY = #{deletedBy}</if>
+        </where>
+    </select>
+    
+    <select id="selectBsiTradeById" parameterType="String" resultMap="BsiTradeResult">
+        <include refid="selectBsiTradeVo"/>
+        where ID = #{id}
+    </select>
+    <select id="checkBsiTradeNameUnique" parameterType="String" resultType="int">
+        select count(1) from bsi_trade where NAME = #{name}
+    </select>
+    <select id="checkBsiTradeSelf" parameterType="BsiTrade" resultType="int">
+        select count(1) from bsi_trade where ID = #{id} and NAME = #{name}
+    </select>
+
+    <insert id="insertBsiTrade" parameterType="BsiTrade">
+        <selectKey keyProperty="id" resultType="java.lang.String" order="BEFORE">
+            select REPLACE(newId(),'-','')
+        </selectKey>
+
+        insert into bsi_trade
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="name != null">NAME,</if>
+            <if test="showOrder != null">SHOW_ORDER,</if>
+            <if test="isUse != null">IS_USE,</if>
+            <if test="deletedFlag != null">DELETED_FLAG,</if>
+            <if test="createdBy != null">CREATED_BY,</if>
+            CREATED_TIME,
+            <if test="updatedBy != null">UPDATED_BY,</if>
+            <if test="updatedTime != null">UPDATED_TIME,</if>
+            <if test="deletedTime != null">DELETED_TIME,</if>
+            <if test="deletedBy != null">DELETED_BY,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="showOrder != null">#{showOrder},</if>
+            <if test="isUse != null">#{isUse},</if>
+            <if test="deletedFlag != null">#{deletedFlag},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            getdate(),
+            <if test="updatedBy != null">#{updatedBy},</if>
+            <if test="updatedTime != null">#{updatedTime},</if>
+            <if test="deletedTime != null">#{deletedTime},</if>
+            <if test="deletedBy != null">#{deletedBy},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBsiTrade" parameterType="BsiTrade">
+        update bsi_trade
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">NAME = #{name},</if>
+            <if test="showOrder != null">SHOW_ORDER = #{showOrder},</if>
+            <if test="isUse != null">IS_USE = #{isUse},</if>
+            <if test="deletedFlag != null">DELETED_FLAG = #{deletedFlag},</if>
+            <if test="createdBy != null">CREATED_BY = #{createdBy},</if>
+            <if test="createdTime != null">CREATED_TIME = #{createdTime},</if>
+            <if test="updatedBy != null">UPDATED_BY = #{updatedBy},</if>
+            UPDATED_TIME = getdate(),
+            <if test="deletedTime != null">DELETED_TIME = #{deletedTime},</if>
+            <if test="deletedBy != null">DELETED_BY = #{deletedBy},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteBsiTradeById" parameterType="String">
+        delete from bsi_trade where ID = #{id}
+    </delete>
+
+    <delete id="deleteBsiTradeByIds" parameterType="String">
+        delete from bsi_trade where ID in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

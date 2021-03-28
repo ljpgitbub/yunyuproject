@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.basedata.mapper.BsiFileServerMapper">
+    
+    <resultMap type="BsiFileServer" id="BsiFileServerResult">
+        <result property="id"    column="ID"    />
+        <result property="name"    column="NAME"    />
+        <result property="host"    column="HOST"    />
+        <result property="port"    column="PORT"    />
+        <result property="username"    column="USERNAME"    />
+        <result property="password"    column="PASSWORD"    />
+        <result property="isDefault"    column="IS_DEFAULT"    />
+        <result property="description"    column="DESCRIPTION"    />
+        <result property="createdBy"    column="CREATED_BY"    />
+        <result property="createdTime"    column="CREATED_TIME"    />
+        <result property="updatedBy"    column="UPDATED_BY"    />
+        <result property="updatedTime"    column="UPDATED_TIME"    />
+        <result property="deletedTime"    column="DELETED_TIME"    />
+        <result property="deletedBy"    column="DELETED_BY"    />
+        <result property="deletedFlag"    column="DELETED_FLAG"    />
+    </resultMap>
+
+    <sql id="selectBsiFileServerVo">
+        select ID, NAME, HOST, PORT, USERNAME, PASSWORD, IS_DEFAULT, DESCRIPTION, CREATED_BY, CREATED_TIME, UPDATED_BY, UPDATED_TIME, DELETED_TIME, DELETED_BY, DELETED_FLAG from bsi_file_server
+    </sql>
+
+    <select id="selectBsiFileServerList" parameterType="BsiFileServer" resultMap="BsiFileServerResult">
+        <include refid="selectBsiFileServerVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and NAME like concat('%', #{name}, '%')</if>
+            <if test="host != null  and host != ''"> and HOST = #{host}</if>
+            <if test="port != null  and port != ''"> and PORT = #{port}</if>
+            <if test="username != null  and username != ''"> and USERNAME like concat('%', #{username}, '%')</if>
+            <if test="password != null  and password != ''"> and PASSWORD = #{password}</if>
+            <if test="isDefault != null  and isDefault != ''"> and IS_DEFAULT = #{isDefault}</if>
+            <if test="description != null  and description != ''"> and DESCRIPTION = #{description}</if>
+            <if test="createdBy != null  and createdBy != ''"> and CREATED_BY = #{createdBy}</if>
+            <if test="createdTime != null "> and CREATED_TIME = #{createdTime}</if>
+            <if test="updatedBy != null  and updatedBy != ''"> and UPDATED_BY = #{updatedBy}</if>
+            <if test="updatedTime != null "> and UPDATED_TIME = #{updatedTime}</if>
+            <if test="deletedTime != null "> and DELETED_TIME = #{deletedTime}</if>
+            <if test="deletedBy != null  and deletedBy != ''"> and DELETED_BY = #{deletedBy}</if>
+            <if test="deletedFlag != null  and deletedFlag != ''"> and DELETED_FLAG = #{deletedFlag}</if>
+        </where>
+    </select>
+    
+    <select id="selectBsiFileServerById" parameterType="String" resultMap="BsiFileServerResult">
+        <include refid="selectBsiFileServerVo"/>
+        where ID = #{id}
+    </select>
+        
+    <insert id="insertBsiFileServer" parameterType="BsiFileServer">
+        <selectKey keyProperty="id" resultType="java.lang.String" order="BEFORE">
+            select REPLACE(newId(),'-','')
+        </selectKey>
+
+        insert into bsi_file_server
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="name != null">NAME,</if>
+            <if test="host != null">HOST,</if>
+            <if test="port != null">PORT,</if>
+            <if test="username != null">USERNAME,</if>
+            <if test="password != null">PASSWORD,</if>
+            <if test="isDefault != null">IS_DEFAULT,</if>
+            <if test="description != null">DESCRIPTION,</if>
+            <if test="createdBy != null">CREATED_BY,</if>
+            <if test="createdTime != null">CREATED_TIME,</if>
+            <if test="updatedBy != null">UPDATED_BY,</if>
+            <if test="updatedTime != null">UPDATED_TIME,</if>
+            <if test="deletedTime != null">DELETED_TIME,</if>
+            <if test="deletedBy != null">DELETED_BY,</if>
+            <if test="deletedFlag != null">DELETED_FLAG,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="host != null">#{host},</if>
+            <if test="port != null">#{port},</if>
+            <if test="username != null">#{username},</if>
+            <if test="password != null">#{password},</if>
+            <if test="isDefault != null">#{isDefault},</if>
+            <if test="description != null">#{description},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updatedBy != null">#{updatedBy},</if>
+            <if test="updatedTime != null">#{updatedTime},</if>
+            <if test="deletedTime != null">#{deletedTime},</if>
+            <if test="deletedBy != null">#{deletedBy},</if>
+            <if test="deletedFlag != null">#{deletedFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBsiFileServer" parameterType="BsiFileServer">
+        update bsi_file_server
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">NAME = #{name},</if>
+            <if test="host != null">HOST = #{host},</if>
+            <if test="port != null">PORT = #{port},</if>
+            <if test="username != null">USERNAME = #{username},</if>
+            <if test="password != null">PASSWORD = #{password},</if>
+            <if test="isDefault != null">IS_DEFAULT = #{isDefault},</if>
+            <if test="description != null">DESCRIPTION = #{description},</if>
+            <if test="createdBy != null">CREATED_BY = #{createdBy},</if>
+            <if test="createdTime != null">CREATED_TIME = #{createdTime},</if>
+            <if test="updatedBy != null">UPDATED_BY = #{updatedBy},</if>
+            <if test="updatedTime != null">UPDATED_TIME = #{updatedTime},</if>
+            <if test="deletedTime != null">DELETED_TIME = #{deletedTime},</if>
+            <if test="deletedBy != null">DELETED_BY = #{deletedBy},</if>
+            <if test="deletedFlag != null">DELETED_FLAG = #{deletedFlag},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteBsiFileServerById" parameterType="String">
+        delete from bsi_file_server where ID = #{id}
+    </delete>
+
+    <delete id="deleteBsiFileServerByIds" parameterType="String">
+        delete from bsi_file_server where ID in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
