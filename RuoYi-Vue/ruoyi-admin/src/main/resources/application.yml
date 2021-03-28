@@ -58,7 +58,7 @@ spring:
       enabled: true
   # redis 配置
   redis:
-    # 地址     地址地址抵制抵制抵制抵制抵制到底
+    # 地址
     host: 114.116.237.177
     # 端口，默认为6379
     port: 6379
